@@ -33,6 +33,7 @@ const AppContent = () => {
         <Stack.Screen 
           name="Dashboard" 
           component={Dashboard}
+          options={{headerShown:false}} 
           // options={({ navigation }) => ({
           //   headerRight: () => (
           //     <HeaderRightButton navigation={navigation} />

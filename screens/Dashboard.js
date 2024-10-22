@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ScheduleModal from './ScheduleModal';
 import HeaderRightButton from './SchedularButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Dashboard = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -13,8 +14,27 @@ const Dashboard = ({ route, navigation }) => {
     }
   }, [route.params?.showModal]);
 
+const handelLogout = () => {
+  navigation.navigate('Login');
+}
+
   return (
-    <View style={styles.container}>
+    <>
+    <View style={styles.containerLogout}>
+      <TouchableOpacity
+        onPress={handelLogout}
+      >
+
+        <Ionicons 
+          name='exit-outline'
+          size={50}
+          color='#193893'
+        />
+      </TouchableOpacity>
+      
+      </View>
+      <View style={styles.container}>
+
 
       <HeaderRightButton navigation={navigation}/>
       
@@ -23,6 +43,7 @@ const Dashboard = ({ route, navigation }) => {
         onClose={() => setModalVisible(false)}
       />
     </View>
+    </>
   );
 };
 
@@ -31,6 +52,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  containerLogout:{
+    width: '100%',
+    justifyContent:'end',
+    //alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   title: {

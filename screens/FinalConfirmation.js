@@ -38,13 +38,13 @@ const FinalConfirmationModal = ({ onCancel }) => {
         <Text style={styles.detailTitle}>Selected Report :</Text>
         {
           scheduleState.reportTypes.map((type, index) => (
-            <View style={{flexDirection: 'row',alignItems:'center', justifyContent:'start', marginBottom:10}}>
+            <View  key={index} style={{flexDirection: 'row',alignItems:'center', justifyContent:'start', marginBottom:10}}>
               <Ionicons 
                 name='checkmark-circle'
                 size={24}
                 color='green'
               />
-              <Text key={index} style={styles.detailText}>{type.charAt(0).toUpperCase()+ type.slice(1)}</Text>
+              <Text style={styles.detailText}>{type.charAt(0).toUpperCase()+ type.slice(1)}</Text>
             </View>
           ))
         }
