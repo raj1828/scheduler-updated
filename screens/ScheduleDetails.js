@@ -7,12 +7,14 @@ import SelectedParametersDropdown from './SelectedParameters';
 import TimeSelector from './SelectTime';
 import IntervalSelector from './SelectInterval';
 import WeekendSkipToggle from './SkipToggle';
-import DaySelector from './DaySelector';
-import DateSelector from './DateSelector';
 
 const ScheduleDetailsComponent = ({ onSave }) => {
   const dispatch = useDispatch();
+
+  // Get schedule and logged-in user's email
   const scheduleState = useSelector(state => state.reportSchedule);
+  //const loggedInUserEmail = useSelector(state => state.auth.user?.email); // Get logged-in user's email from authSlice
+
   const [localState, setLocalState] = useState({
     selectedTime: scheduleState.selectedTime || '9:00 AM',
     skipWeekends: scheduleState.skipWeekends || false,
@@ -25,6 +27,7 @@ const ScheduleDetailsComponent = ({ onSave }) => {
     const updatedState = {
       ...localState,
       selectedDate: localState.selectedDate.toISOString(),
+      //scheduleUserEmail: loggedInUserEmail,  // Include logged-in user's email
     };
     dispatch(setScheduleDetails(updatedState));
     saveStateToStorage(store.getState());
@@ -32,8 +35,8 @@ const ScheduleDetailsComponent = ({ onSave }) => {
   };
 
   const handleCancel = () => {
-    onCancel()
-  }
+    onCancel();
+  };
 
   const handleLocalStateChange = (key, value) => {
     setLocalState(prevState => ({ ...prevState, [key]: value }));
@@ -41,46 +44,43 @@ const ScheduleDetailsComponent = ({ onSave }) => {
 
   return (
     <>
-    
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Schedule Details</Text>
-      <SelectedParametersDropdown />
-      <TimeSelector
-        selectedTime={localState.selectedTime}
-        onTimeChange={(time) => handleLocalStateChange('selectedTime', time)}
-      />
-      <IntervalSelector
-        selectedInterval={localState.interval}
-        onIntervalChange={(interval) => handleLocalStateChange('interval', interval)}
-      />
-      <WeekendSkipToggle
-        skipWeekends={localState.skipWeekends}
-        onToggle={(skip) => handleLocalStateChange('skipWeekends', skip)}
-      />
-      {(localState.interval === 'weekly' || localState.interval === 'every two weeks') && (
-        <DaySelector
-          selectedDay={localState.selectedDay}
-          onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Schedule Details</Text>
+        <SelectedParametersDropdown />
+        <TimeSelector
+          selectedTime={localState.selectedTime}
+          onTimeChange={(time) => handleLocalStateChange('selectedTime', time)}
         />
-      )}
-      {(localState.interval === 'monthly' || localState.interval === 'quarterly') && (
-        <DateSelector
-          selectedDate={localState.selectedDate}
-          onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
+        <IntervalSelector
+          selectedInterval={localState.interval}
+          onIntervalChange={(interval) => handleLocalStateChange('interval', interval)}
         />
-      )}
-      {/* <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity> */}
-    </ScrollView>
-    <View style={styles.footerButton}>
-    <TouchableOpacity style={styles.cancleButton} onPress={handleCancel}>
-        <Text style={styles.cancleButtonText}>Cancle</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.proceedButton} onPress={handleSave}>
-        <Text style={styles.proceedButtonText}>Proceed</Text>
-      </TouchableOpacity>
-    </View>
+        
+        {/* {(localState.interval === 'weekly' || localState.interval === 'every two weeks') && (
+          <DaySelector
+            selectedDay={localState.selectedDay}
+            onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
+          />
+        )}
+        {(localState.interval === 'monthly' || localState.interval === 'quarterly') && (
+          <DateSelector
+            selectedDate={localState.selectedDate}
+            onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
+          />
+        )} */}
+        <WeekendSkipToggle
+          skipWeekends={localState.skipWeekends}
+          onToggle={(skip) => handleLocalStateChange('skipWeekends', skip)}
+        />
+      </ScrollView>
+      <View style={styles.footerButton}>
+        <TouchableOpacity style={styles.cancleButton} onPress={handleCancel}>
+          <Text style={styles.cancleButtonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.proceedButton} onPress={handleSave}>
+          <Text style={styles.proceedButtonText}>Proceed</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -90,42 +90,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color:'#193893',
+    color: '#193893',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  saveButton: {
-    backgroundColor: '#193893',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  saveButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
   proceedButton: {
     width: '49%',
     backgroundColor: '#193893',
     padding: 15,
     borderRadius: 8,
-    backgroundColor: '#193893',
-    padding: 15,
-    borderRadius: 8,
     alignItems: 'center',
     marginTop: 5,
   },
-  cancleButton:{
+  cancleButton: {
     width: '49%',
-    //backgroundColor: '#193893',
     padding: 15,
     borderRadius: 8,
     backgroundColor: '#fff',
-    padding: 15,
-    //borderRadius: 8,
     alignItems: 'center',
     marginTop: 5,
     borderWidth: 1,
@@ -140,13 +122,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-  footerButton:{
+  footerButton: {
     flexDirection: 'row',
-    justifyContent:'space-between',
-    //marginBottom: 20,
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    //paddingVertical: 10
-  }
+  },
 });
 
 export default ScheduleDetailsComponent;

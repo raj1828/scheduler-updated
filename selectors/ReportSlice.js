@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  user :[],
+  user: [],
   isLoggedIn: null,
   reportTypes: [],
   selectedVehicles: [],
@@ -11,6 +10,7 @@ const initialState = {
   interval: '',
   selectedDay: '',
   selectedDate: '',
+  scheduleUserEmail: '', // Add this field to the initial state
 };
 
 const reportScheduleSlice = createSlice({
@@ -27,22 +27,21 @@ const reportScheduleSlice = createSlice({
       state.emailIds = action.payload;
     },
     setScheduleDetails: (state, action) => {
+      // Make sure to update scheduleUserEmail here
       return { ...state, ...action.payload };
     },
     login: (state, action) => {
-        state.user = action.payload;
-        state.isLoggedIn = true;
-      },
-      logout: (state) => {
-        state.user = null;
-        state.isLoggedIn = false;
-      },
-      register: (state, action) => {
-        
-        state.user = action.payload;
-        state.isLoggedIn = true;
-        console.log(state)
-      },
+      state.user = action.payload;
+      state.isLoggedIn = true;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isLoggedIn = false;
+    },
+    register: (state, action) => {
+      state.user = action.payload;
+      state.isLoggedIn = true;
+    },
     resetSchedule: () => initialState,
   },
 });
@@ -53,7 +52,7 @@ export const {
   setEmailIds,
   setScheduleDetails,
   resetSchedule,
-  login,logout,register,
+  login, logout, register,
 } = reportScheduleSlice.actions;
 
 export default reportScheduleSlice.reducer;

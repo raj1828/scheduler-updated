@@ -22,7 +22,7 @@ const ScheduleModal = ({visible, onClose}) => {
 
   useEffect(() => {
     if (visible) {
-      setCurrentStep('view');
+      setCurrentStep('edit');
     }
   }, [visible]);
 
