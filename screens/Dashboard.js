@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ScheduleModal from './ScheduleModal';
 import HeaderRightButton from './SchedularButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch } from 'react-redux';
+import { logout } from '../selectors/ReportSlice';
 
 const Dashboard = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (route.params?.showModal) {
@@ -15,6 +18,7 @@ const Dashboard = ({ route, navigation }) => {
   }, [route.params?.showModal]);
 
 const handelLogout = () => {
+  dispatch(logout());
   navigation.navigate('Login');
 }
 
