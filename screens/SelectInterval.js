@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,9 +9,71 @@ import { setScheduleDetails } from '../selectors/ReportSlice';
 import DaySelector from './DaySelector';
 import DateSelector from './DateSelector';
 
-const IntervalSelector = ({ selectedInterval, onIntervalChange }) => {
+const IntervalSelector = ({ selectedInterval, onIntervalChange}) => {
   //selectedDate: scheduleState.selectedDate ? new Date(scheduleState.selectedDate) : new Date(),
-  const [selectedDate, setSelectedDate] = useState(new Date())
+ // const [selectedDate, setSelectedDate] = useState(new Date())
+
+ const dispatch = useDispatch();
+ // Get schedule and logged-in user's email
+ const scheduleState = useSelector(state => state.reportSchedule);
+ //const loggedInUserEmail = useSelector(state => state.auth.user?.email); // Get logged-in user's email from authSlice
+
+ const [localState, setLocalState] = useState({
+   selectedTime: scheduleState.selectedTime || '9:00 AM',
+   skipWeekends: scheduleState.skipWeekends || false,
+   interval: scheduleState.interval || 'weekly',
+   selectedDay: scheduleState.selectedDay || 'Monday',
+   selectedDate: scheduleState.selectedDate ? new Date(scheduleState.selectedDate) : new Date(),
+ });
+
+//  const handelLocalState = (key, value) => {
+//   console.log("current",key, value)
+//   console.log("prev",scheduleState)
+//   setLocalState(prevState => ({ ...prevState, [key]: value }));
+//   console.log('localstete', localState.selectedDay)
+//  }
+const handelLocalState = (key, value) => {
+  setLocalState(prevState => {
+      const updatedState = { ...prevState, [key]: value };
+      
+      // Dispatch updated state to Redux
+      const update = { ...scheduleState, ...updatedState };
+      dispatch(setScheduleDetails(update));
+      saveStateToStorage(store.getState());
+
+      return updatedState;
+  });
+};
+//  const handleLocalStateChange = (key, value) => {
+//   const local = setLocalState(prevState => ({ ...prevState, [key]: value }));
+//   console.log('locallll',local)
+  
+//   const update = {
+//     ...localState, local
+//   }
+
+//    dispatch(setScheduleDetails(update));
+//     saveStateToStorage(store.getState());
+//    // onSave();
+//    console.log('Date', store.getState())
+//  };
+const handleLocalStateChange = (key, value) => {
+  // Update local state
+  setLocalState(prevState => {
+      const updatedState = { ...prevState, [key]: value };
+
+      // Dispatch the updated state to Redux
+      const update = { ...scheduleState, ...updatedState };
+      dispatch(setScheduleDetails(update));
+
+      // Save to local storage after dispatch
+      saveStateToStorage(store.getState());
+
+      return updatedState;
+  });
+};
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Set Interval:</Text>
@@ -33,7 +95,7 @@ const IntervalSelector = ({ selectedInterval, onIntervalChange }) => {
       {/* Show DaySelector or DateSelector based on selectedInterval */}
       {(selectedInterval === 'weekly') && (
         <DaySelector
-          selectedDay={selectedInterval}
+          selectedDay={localState.selectedDay}
           onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
         />
       )}
@@ -55,7 +117,7 @@ const IntervalSelector = ({ selectedInterval, onIntervalChange }) => {
 
       {( selectedInterval === 'every two weeks') && (
         <DaySelector
-          selectedDay={selectedInterval}
+          selectedDay={localState.selectedDay}
           onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
         />
       )}
@@ -76,7 +138,7 @@ const IntervalSelector = ({ selectedInterval, onIntervalChange }) => {
       </TouchableOpacity>
       {(selectedInterval === 'monthly' ) && (
         <DateSelector
-          selectedDate={selectedDate}
+          selectedDate={localState.selectedDate}
           onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
         />
       )}
@@ -97,7 +159,7 @@ const IntervalSelector = ({ selectedInterval, onIntervalChange }) => {
       </TouchableOpacity>
       {( selectedInterval === 'quarterly') && (
         <DateSelector
-          selectedDate={selectedDate}
+          selectedDate={localState.selectedDate}
           onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
         />
       )}

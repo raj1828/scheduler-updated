@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { useSelector } from 'react-redux';
 
 const ExistingScheduleView = ({ onEdit }) => {
-  const scheduleState = useSelector(state => state.reportSchedule) || {}; // Fallback to an empty object if undefined
+  const scheduleState = useSelector(state => state.reportSchedule) || {}; 
 
   return (
     <View style={styles.container}>

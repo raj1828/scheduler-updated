@@ -11,7 +11,10 @@ const ScheduleModal = ({visible, onClose}) => {
   const scheduleExists = useSelector(
     state => state.reportSchedule.reportTypes.length > 0,
   );
-
+  const handleClose = () => {
+    setCurrentStep('edit');
+    onClose();
+  };
   const isLoggedIn = useSelector(state => state.reportSchedule.isLoggedIn);
   const loggedInUserEmail = useSelector(
     state => state.reportSchedule.user?.email,
@@ -22,9 +25,10 @@ const ScheduleModal = ({visible, onClose}) => {
 
   useEffect(() => {
     if (visible) {
-      setCurrentStep('edit');
+      setCurrentStep('view');
     }
   }, [visible]);
+
 
   const renderContent = () => {
     if (!isLoggedIn) {
@@ -42,13 +46,14 @@ const ScheduleModal = ({visible, onClose}) => {
   console.log('loggedInUserEmail:', loggedInUserEmail);
   console.log('scheduleUserEmail:', scheduleUserEmail);
   console.log('Can Edit Schedule:', canEditSchedule);
+  
 
     switch (currentStep) {
       case 'view':
         if (scheduleExists) {
           return (
             <ExistingScheduleView
-              onEdit={canEditSchedule ? () => setCurrentStep('edit') : null}
+              onEdit={() => setCurrentStep('edit') }
             />
           );
         } else {
@@ -66,10 +71,11 @@ const ScheduleModal = ({visible, onClose}) => {
           );
         }
       case 'edit':
-        return <EditModal onProceed={() => setCurrentStep('details')} />;
+        return <EditModal onCancel={handleClose}
+        onProceed={() => setCurrentStep('details')} />;
       case 'details':
         return (
-          <ScheduleDetailsComponent
+          <ScheduleDetailsComponent onCancel={handleClose}
             onSave={() => setCurrentStep('confirmation')}
           />
         );
@@ -80,10 +86,7 @@ const ScheduleModal = ({visible, onClose}) => {
     }
   };
 
-  const handleClose = () => {
-    setCurrentStep('edit');
-    onClose();
-  };
+ 
 
   return (
     <Modal

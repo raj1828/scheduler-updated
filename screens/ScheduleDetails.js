@@ -8,7 +8,7 @@ import TimeSelector from './SelectTime';
 import IntervalSelector from './SelectInterval';
 import WeekendSkipToggle from './SkipToggle';
 
-const ScheduleDetailsComponent = ({ onSave }) => {
+const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
   const dispatch = useDispatch();
 
   // Get schedule and logged-in user's email
@@ -17,16 +17,17 @@ const ScheduleDetailsComponent = ({ onSave }) => {
 
   const [localState, setLocalState] = useState({
     selectedTime: scheduleState.selectedTime || '9:00 AM',
-    skipWeekends: scheduleState.skipWeekends || false,
     interval: scheduleState.interval || 'weekly',
-    selectedDay: scheduleState.selectedDay || 'Monday',
-    selectedDate: scheduleState.selectedDate ? new Date(scheduleState.selectedDate) : new Date(),
+    skipWeekends: scheduleState.skipWeekends || false,
+    // selectedDay: scheduleState.selectedDay || 'Monday',
+    // selectedDate: scheduleState.selectedDate? new Date(scheduleState.selectedDate) : new Date(),
+    
   });
 
   const handleSave = () => {
     const updatedState = {
       ...localState,
-      selectedDate: localState.selectedDate.toISOString(),
+      // selectedDate: localState.selectedDate.toISOString(),
       //scheduleUserEmail: loggedInUserEmail,  // Include logged-in user's email
     };
     dispatch(setScheduleDetails(updatedState));
@@ -51,7 +52,8 @@ const ScheduleDetailsComponent = ({ onSave }) => {
           selectedTime={localState.selectedTime}
           onTimeChange={(time) => handleLocalStateChange('selectedTime', time)}
         />
-        <IntervalSelector
+        <IntervalSelector  
+          skipWeekends={localState.skipWeekends}
           selectedInterval={localState.interval}
           onIntervalChange={(interval) => handleLocalStateChange('interval', interval)}
         />
