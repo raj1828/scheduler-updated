@@ -12,6 +12,7 @@ const initialState = {
   selectedDate: '',
   scheduleUserEmail: '', // Add this field to the initial state
   currentModalStep: 'edit',
+  
 };
 
 const reportScheduleSlice = createSlice({

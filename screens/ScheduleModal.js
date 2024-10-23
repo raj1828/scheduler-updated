@@ -14,6 +14,9 @@ const ScheduleModal = ({ visible, onClose }) => {
   const loggedInUserEmail = useSelector(state => state.reportSchedule.user?.email);
   const scheduleUserEmail = useSelector(state => state.reportSchedule.userEmail);
 
+  const scheduleData = useSelector(state => state.reportSchedule)
+  console.log('schedule data on dashboard:', scheduleData)
+
   const handleClose = () => {
     dispatch(setModalStep('edit')); // Reset to 'edit' step
     onClose();

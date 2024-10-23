@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux';
 const ExistingScheduleView = ({ onEdit }) => {
   const scheduleState = useSelector(state => state.reportSchedule) || {}; 
 
+  console.log('emaillllllllll', scheduleState)
+  console.log('emaillllllllll', scheduleState.emailIds)
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Schedule Reports</Text>
@@ -12,8 +15,8 @@ const ExistingScheduleView = ({ onEdit }) => {
       <View style={styles.detailsContainer}>
         <View style={styles.emailContainer}>
           {/* Email(s) Section */}
-          {scheduleState.emails?.length > 0 ? (
-            scheduleState.emails.map((email, index) => (
+          {scheduleState.emailIds?.length > 0 ? (
+            scheduleState.emailIds.map((email, index) => (
               <Text key={index} style={styles.emailText}>{email}</Text>
             ))
           ) : (
@@ -47,8 +50,8 @@ const ExistingScheduleView = ({ onEdit }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vehicleItem}>
-              <Text style={styles.vehicleText}>{item.licensePlate || 'N/A'}</Text>
-              <Text style={styles.vehicleSubText}>{item.details || 'No details available'}</Text>
+              <Text style={styles.vehicleText}>{item|| 'N/A'}</Text>
+              {/* <Text style={styles.vehicleSubText}>{item.details || 'No details available'}</Text> */}
             </View>
           )}
           ListEmptyComponent={<Text style={styles.vehicleText}>No vehicles selected</Text>}
