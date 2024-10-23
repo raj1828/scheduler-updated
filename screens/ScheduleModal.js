@@ -1,34 +1,29 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Modal, TouchableOpacity, Text} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import EditModal from './Editmodal';
 import ScheduleDetailsComponent from './ScheduleDetails';
 import FinalConfirmationModal from './FinalConfirmation';
 import ExistingScheduleView from './ExistingData';
+import { setModalStep } from '../selectors/ReportSlice';
+const ScheduleModal = ({ visible, onClose }) => {
+  const dispatch = useDispatch();
+  const currentStep = useSelector(state => state.reportSchedule.currentModalStep);
+  const scheduleExists = useSelector(state => state.reportSchedule.reportTypes.length > 0);
+  const isLoggedIn = useSelector(state => state.reportSchedule.isLoggedIn);
+  const loggedInUserEmail = useSelector(state => state.reportSchedule.user?.email);
+  const scheduleUserEmail = useSelector(state => state.reportSchedule.userEmail);
 
-const ScheduleModal = ({visible, onClose}) => {
-  const [currentStep, setCurrentStep] = useState('edit');
-  const scheduleExists = useSelector(
-    state => state.reportSchedule.reportTypes.length > 0,
-  );
   const handleClose = () => {
-    setCurrentStep('edit');
+    dispatch(setModalStep('edit')); // Reset to 'edit' step
     onClose();
   };
-  const isLoggedIn = useSelector(state => state.reportSchedule.isLoggedIn);
-  const loggedInUserEmail = useSelector(
-    state => state.reportSchedule.user?.email,
-  );
-  const scheduleUserEmail = useSelector(
-    state => state.reportSchedule.userEmail,
-  );
 
   useEffect(() => {
     if (visible) {
-      setCurrentStep('view');
+      dispatch(setModalStep('view')); // Set to 'view' when modal opens
     }
-  }, [visible]);
-
+  }, [visible, dispatch]);
 
   const renderContent = () => {
     if (!isLoggedIn) {
@@ -39,21 +34,14 @@ const ScheduleModal = ({visible, onClose}) => {
       );
     }
 
-    const canEditSchedule =
-      scheduleExists && loggedInUserEmail === scheduleUserEmail;
-
-      console.log('scheduleExists:', scheduleExists);
-  console.log('loggedInUserEmail:', loggedInUserEmail);
-  console.log('scheduleUserEmail:', scheduleUserEmail);
-  console.log('Can Edit Schedule:', canEditSchedule);
-  
+    const canEditSchedule = scheduleExists && loggedInUserEmail === scheduleUserEmail;
 
     switch (currentStep) {
       case 'view':
         if (scheduleExists) {
           return (
             <ExistingScheduleView
-              onEdit={() => setCurrentStep('edit') }
+              onEdit={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
             />
           );
         } else {
@@ -64,19 +52,25 @@ const ScheduleModal = ({visible, onClose}) => {
               </Text>
               <TouchableOpacity
                 style={styles.createButton}
-                onPress={() => setCurrentStep('edit')}>
+                onPress={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
+              >
                 <Text style={styles.buttonText}>Create Schedule</Text>
               </TouchableOpacity>
             </View>
           );
         }
       case 'edit':
-        return <EditModal onCancel={handleClose}
-        onProceed={() => setCurrentStep('details')} />;
+        return (
+          <EditModal
+            onCancel={handleClose}
+            onProceed={() => dispatch(setModalStep('details'))} // Change to 'details' step
+          />
+        );
       case 'details':
         return (
-          <ScheduleDetailsComponent onCancel={handleClose}
-            onSave={() => setCurrentStep('confirmation')}
+          <ScheduleDetailsComponent
+            onCancel={handleClose}
+            onSave={() => dispatch(setModalStep('confirmation'))} // Change to 'confirmation' step
           />
         );
       case 'confirmation':
@@ -86,22 +80,16 @@ const ScheduleModal = ({visible, onClose}) => {
     }
   };
 
- 
-
   return (
     <Modal
       visible={visible}
       animationType="slide"
       transparent={true}
-      onRequestClose={handleClose}>
+      onRequestClose={handleClose}
+    >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           {renderContent()}
-          {/* {currentStep !== 'confirmation' && (
-            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-              <Text style={styles.closeButtonText}>Can</Text>
-            </TouchableOpacity>
-          )} */}
         </View>
       </View>
     </Modal>
@@ -122,18 +110,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 34,
     height: '75%',
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#ccc',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: '#333',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   errorText: {
     fontSize: 18,
@@ -162,7 +138,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
 });
 
 export default ScheduleModal;

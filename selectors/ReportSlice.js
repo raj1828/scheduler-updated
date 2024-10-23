@@ -11,6 +11,7 @@ const initialState = {
   selectedDay: '',
   selectedDate: '',
   scheduleUserEmail: '', // Add this field to the initial state
+  currentModalStep: 'edit',
 };
 
 const reportScheduleSlice = createSlice({
@@ -42,6 +43,9 @@ const reportScheduleSlice = createSlice({
       state.user = action.payload;
       state.isLoggedIn = true;
     },
+    setModalStep: (state, action) => {
+      state.currentModalStep = action.payload;
+    },
     resetSchedule: () => initialState,
   },
 });
@@ -53,6 +57,7 @@ export const {
   setScheduleDetails,
   resetSchedule,
   login, logout, register,
+  setModalStep
 } = reportScheduleSlice.actions;
 
 export default reportScheduleSlice.reducer;
