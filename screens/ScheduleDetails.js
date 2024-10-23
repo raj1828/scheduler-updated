@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { useSelector, useDispatch } from 'react-redux';
 import { saveStateToStorage, store } from '../store/store';
 import { setScheduleDetails } from '../selectors/ReportSlice';
-import SelectedParametersDropdown from './SelectedParameters';
-import TimeSelector from './SelectTime';
-import IntervalSelector from './SelectInterval';
-import WeekendSkipToggle from './SkipToggle';
+import SelectedParametersDropdown from '../components/SelectedParametersComponent';
+import TimeSelector from '../components/TimeSelectComponent';
+import IntervalSelector from '../components/SelectInterval';
+import WeekendSkipToggle from '../components/SkipToggle';
 
 const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
   const dispatch = useDispatch();

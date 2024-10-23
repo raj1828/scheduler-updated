@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'rea
 import { useSelector, useDispatch } from 'react-redux';
 import { store,saveStateToStorage } from '../store/store';
 import { setReportTypes, setSelectedVehicles, setEmailIds } from '../selectors/ReportSlice';
-import ReportTypeSelector from './ReportType';
-import VehicleSelector from './Vehicleselector';
-import EmailSelector from './EmailSelector';
+import ReportTypeSelector from '../components/ReportTypeComponent';
+import VehicleSelector from '../components/SelectVechicleComponent';
+import EmailSelector from '../components/EmailSelectorComponent';
 
 const EditModal = ({ onProceed, onCancel }) => {
   const dispatch = useDispatch();

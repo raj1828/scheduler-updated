@@ -3,7 +3,7 @@ import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import EditModal from './Editmodal';
 import ScheduleDetailsComponent from './ScheduleDetails';
-import FinalConfirmationModal from './FinalConfirmation';
+import FinalConfirmationModal from './ConfirmPage';
 import ExistingScheduleView from './ExistingData';
 import { setModalStep } from '../selectors/ReportSlice';
 const ScheduleModal = ({ visible, onClose }) => {

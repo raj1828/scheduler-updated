@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
 const ExistingScheduleView = ({ onEdit }) => {
@@ -8,7 +8,7 @@ const ExistingScheduleView = ({ onEdit }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Schedule Reports</Text>
-
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.detailsContainer}>
         <View style={styles.emailContainer}>
           {/* Email(s) Section */}
@@ -54,6 +54,8 @@ const ExistingScheduleView = ({ onEdit }) => {
           ListEmptyComponent={<Text style={styles.vehicleText}>No vehicles selected</Text>}
         />
       </View>
+
+      </ScrollView>
 
       {/* Edit Button */}
       <TouchableOpacity style={styles.editButton} onPress={onEdit}>
