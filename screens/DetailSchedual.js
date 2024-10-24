@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { saveStateToStorage, store } from '../store/store';
-import { setScheduleDetails } from '../selectors/ReportSlice';
+import { scheduleDetails } from '../selectors/ReportSlice';
 import SelectedParametersDropdown from '../components/SelectedParametersComponent';
 import TimeSelector from '../components/TimeSelectComponent';
 import IntervalSelector from '../components/SelectInterval';
@@ -30,7 +30,7 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
       // selectedDate: localState.selectedDate.toISOString(),
       //scheduleUserEmail: loggedInUserEmail,  // Include logged-in user's email
     };
-    dispatch(setScheduleDetails(updatedState));
+    dispatch(scheduleDetails(updatedState));
     saveStateToStorage(store.getState());
     onSave();
   };

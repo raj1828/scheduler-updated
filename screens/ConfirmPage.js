@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {  saveStateToStorage, store } from '../store/store';
-import {  setScheduleDetails, setFullData, setModalStep } from '../selectors/ReportSlice';
+import {  scheduleDetails, setFullData, setModalStep } from '../selectors/ReportSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -21,7 +21,7 @@ const FinalConfirmationModal = ({ onCancel }) => {
     const update1 = {
       ...scheduleState,
     }
-    dispatch(setScheduleDetails(update1));
+    dispatch(scheduleDetails(update1));
     const data = {
       id : userEmail,
       ...scheduleState

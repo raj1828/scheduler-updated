@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider, useDispatch } from 'react-redux';
 import { store, loadStateFromStorage } from './store/store';
-import { setScheduleDetails } from './selectors/ReportSlice';
+import { scheduleDetails } from './selectors/ReportSlice';
 import ScheduleModal from './screens/MainModal';
 import Dashboard from './screens/Dashboard';
 import Login from './screens/Login';
@@ -19,7 +19,7 @@ const AppContent = () => {
     const loadState = async () => {
       const savedState = await loadStateFromStorage();
       if (savedState && savedState.reportSchedule) {
-        dispatch(setScheduleDetails(savedState.reportSchedule));
+        dispatch(scheduleDetails(savedState.reportSchedule));
       }
     };
     loadState();

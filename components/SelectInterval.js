@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { saveStateToStorage, store } from '../store/store';
-import { setScheduleDetails } from '../selectors/ReportSlice';
+import { scheduleDetails } from '../selectors/ReportSlice';
 
 import DaySelector from './DaySelector';
 import DateSelector from './DateSelector';
@@ -38,7 +38,7 @@ const handelLocalState = (key, value) => {
       
       // Dispatch updated state to Redux
       const update = { ...scheduleState, ...updatedState };
-      dispatch(setScheduleDetails(update));
+      dispatch(scheduleDetails(update));
       saveStateToStorage(store.getState());
 
       return updatedState;
@@ -52,7 +52,7 @@ const handelLocalState = (key, value) => {
 //     ...localState, local
 //   }
 
-//    dispatch(setScheduleDetails(update));
+//    dispatch(scheduleDetails(update));
 //     saveStateToStorage(store.getState());
 //    // onSave();
 //    console.log('Date', store.getState())
@@ -64,7 +64,7 @@ const handleLocalStateChange = (key, value) => {
 
       // Dispatch the updated state to Redux
       const update = { ...updatedState };
-      dispatch(setScheduleDetails(update));
+      dispatch(scheduleDetails(update));
 
       // Save to local storage after dispatch
       saveStateToStorage(store.getState());

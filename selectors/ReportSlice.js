@@ -29,7 +29,7 @@ const reportScheduleSlice = createSlice({
     setEmailIds: (state, action) => {
       state.emailIds = action.payload;
     },
-    setScheduleDetails: (state, action) => {
+    scheduleDetails: (state, action) => {
       // Update scheduleUserEmail and fullData here
       // const { email, ...rest } = action.payload;
       // state.scheduleUserEmail = email || state.scheduleUserEmail;
@@ -70,7 +70,7 @@ export const {
   setReportTypes,
   setSelectedVehicles,
   setEmailIds,
-  setScheduleDetails,
+  scheduleDetails,
   resetData,
   login, 
   logout, 
