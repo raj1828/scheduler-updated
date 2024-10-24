@@ -53,6 +53,10 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
           selectedTime={localState.selectedTime}
           onTimeChange={(time) => handleLocalStateChange('selectedTime', time)}
         />
+        <WeekendSkipToggle
+          skipWeekends={localState.skipWeekends}
+          onToggle={(skip) => handleLocalStateChange('skipWeekends', skip)}
+        />
         <IntervalSelector  
           skipWeekends={localState.skipWeekends}
           selectedInterval={localState.interval}
@@ -71,10 +75,7 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
             onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
           />
         )} */}
-        <WeekendSkipToggle
-          skipWeekends={localState.skipWeekends}
-          onToggle={(skip) => handleLocalStateChange('skipWeekends', skip)}
-        />
+        
       </ScrollView>
       <View style={styles.footerButton}>
         <TouchableOpacity style={styles.cancleButton} onPress={handleCancel}>

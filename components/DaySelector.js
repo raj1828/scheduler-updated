@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
-const DaySelector = ({ selectedDay, onDayChange }) => {
+const DaySelector = ({ selectedDay, onDayChange, skipWeekends }) => {
+
+
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+  if(skipWeekends){
+    days.splice(5, 2); // Removing Saturday and Sunday from the list if skipWeekends is true.
+    //console.log('days after splice================',days)
+  }
+//console.log('skispp================',skipWeekends)
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Select Day:</Text>

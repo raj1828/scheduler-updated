@@ -9,7 +9,7 @@ import { setScheduleDetails } from '../selectors/ReportSlice';
 import DaySelector from './DaySelector';
 import DateSelector from './DateSelector';
 
-const IntervalSelector = ({ selectedInterval, onIntervalChange}) => {
+const IntervalSelector = ({ selectedInterval, onIntervalChange, skipWeekends}) => {
   //selectedDate: scheduleState.selectedDate ? new Date(scheduleState.selectedDate) : new Date(),
  // const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -96,6 +96,7 @@ const handleLocalStateChange = (key, value) => {
       {/* Show DaySelector or DateSelector based on selectedInterval */}
       {(selectedInterval === 'weekly') && (
         <DaySelector
+          skipWeekends= {skipWeekends}
           selectedDay={localState.selectedDay}
           onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
         />
@@ -118,6 +119,7 @@ const handleLocalStateChange = (key, value) => {
 
       {( selectedInterval === 'every two weeks') && (
         <DaySelector
+        skipWeekends= {skipWeekends}
           selectedDay={localState.selectedDay}
           onDayChange={(day) => handleLocalStateChange('selectedDay', day)}
         />

@@ -62,7 +62,7 @@ const reportScheduleSlice = createSlice({
     setModalStep: (state, action) => {
       state.currentModalStep = action.payload;
     },
-    resetSchedule: () => initialState,
+    resetData: () => initialState,
   },
 });
 
@@ -71,7 +71,7 @@ export const {
   setSelectedVehicles,
   setEmailIds,
   setScheduleDetails,
-  resetSchedule,
+  resetData,
   login, 
   logout, 
   register,
