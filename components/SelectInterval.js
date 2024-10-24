@@ -19,7 +19,7 @@ const IntervalSelector = ({ selectedInterval, onIntervalChange}) => {
  //const loggedInUserEmail = useSelector(state => state.auth.user?.email); // Get logged-in user's email from authSlice
 
  const [localState, setLocalState] = useState({
-   selectedTime: scheduleState.selectedTime || '9:00 AM',
+  //  selectedTime: scheduleState.selectedTime || '9:00 AM',
    skipWeekends: scheduleState.skipWeekends || false,
    interval: scheduleState.interval || 'weekly',
    selectedDay: scheduleState.selectedDay || 'Monday',
@@ -63,11 +63,12 @@ const handleLocalStateChange = (key, value) => {
       const updatedState = { ...prevState, [key]: value };
 
       // Dispatch the updated state to Redux
-      const update = { ...scheduleState, ...updatedState };
+      const update = { ...updatedState };
       dispatch(setScheduleDetails(update));
 
       // Save to local storage after dispatch
       saveStateToStorage(store.getState());
+      // onSave();
 
       return updatedState;
   });

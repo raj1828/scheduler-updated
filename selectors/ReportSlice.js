@@ -31,10 +31,11 @@ const reportScheduleSlice = createSlice({
     },
     setScheduleDetails: (state, action) => {
       // Update scheduleUserEmail and fullData here
-      const { email, ...rest } = action.payload;
-      state.scheduleUserEmail = email || state.scheduleUserEmail;
-      state.fullData = { ...state.fullData, ...rest };
-      console.log('fullData', state.fullData);
+      // const { email, ...rest } = action.payload;
+      // state.scheduleUserEmail = email || state.scheduleUserEmail;
+      // state.fullData = { ...state.fullData, ...rest };
+      // console.log('fullData', state.fullData);
+      return {...state, ...action.payload}
     },
     login: (state, action) => {
       state.user = action.payload;

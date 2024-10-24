@@ -11,6 +11,8 @@ const FinalConfirmationModal = ({ onCancel }) => {
   const scheduleState = useSelector((state) => state.reportSchedule);
   console.log("schedule state: ", scheduleState);
 
+  console.log('day ----', scheduleState.selectedDay)
+
   const handleReset = () => {
     //dispatch(resetSchedule());
     saveStateToStorage(store.getState());
@@ -32,7 +34,7 @@ const FinalConfirmationModal = ({ onCancel }) => {
       <View style={styles.detailsContainer}>
 
         <Text style={{fontSize:18, width: '100%', alignItems:'center', justifyContent:'center'}}>
-          You have schedule the <Text style={{fontWeight: 700}}>{scheduleState.interval.charAt(0).toUpperCase()+ scheduleState.interval.slice(1)} Report</Text>  on <Text style={{fontWeight: 700}}>{scheduleState.selectedDay}</Text>, on Dated <Text style={{fontWeight: 700}}>{new Date(scheduleState.selectedDate).toLocaleDateString()}</Text>, at <Text style={{fontWeight: 700}}>{scheduleState.selectedTime}</Text> 
+          You have schedule the <Text style={{fontWeight: 700}}>{scheduleState.selectedDay.charAt(0).toUpperCase()+ scheduleState.selectedDay.slice(1)} Report</Text>  on <Text style={{fontWeight: 700}}>{scheduleState.selectedDay}</Text>, on Dated <Text style={{fontWeight: 700}}>{new Date(scheduleState.selectedDate).toLocaleDateString()}</Text>, at <Text style={{fontWeight: 700}}>{scheduleState.selectedTime}</Text> 
         </Text>
 
         <Text style={styles.detailTitle}>Selected Report :</Text>

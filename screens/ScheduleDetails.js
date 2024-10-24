@@ -18,7 +18,7 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
   const [localState, setLocalState] = useState({
     selectedTime: scheduleState.selectedTime || '9:00 AM',
     interval: scheduleState.interval || 'weekly',
-    skipWeekends: scheduleState.skipWeekends || false,
+    // skipWeekends: scheduleState.skipWeekends || false,
     // selectedDay: scheduleState.selectedDay || 'Monday',
     // selectedDate: scheduleState.selectedDate? new Date(scheduleState.selectedDate) : new Date(),
     
@@ -41,6 +41,7 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
 
   const handleLocalStateChange = (key, value) => {
     setLocalState(prevState => ({ ...prevState, [key]: value }));
+    
   };
 
   return (
