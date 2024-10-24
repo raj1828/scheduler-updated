@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import EditModal from './Editmodal';
@@ -6,13 +6,12 @@ import ScheduleDetailsComponent from './ScheduleDetails';
 import FinalConfirmationModal from './ConfirmPage';
 import ExistingScheduleView from './ExistingData';
 import { setModalStep } from '../selectors/ReportSlice';
+import { loadStateFromStorage } from '../store/store';
 const ScheduleModal = ({ visible, onClose }) => {
   const dispatch = useDispatch();
   const currentStep = useSelector(state => state.reportSchedule.currentModalStep);
-  const scheduleExists = useSelector(state => state.reportSchedule.reportTypes.length > 0);
-  const isLoggedIn = useSelector(state => state.reportSchedule.isLoggedIn);
-  const loggedInUserEmail = useSelector(state => state.reportSchedule.user?.email);
-  const scheduleUserEmail = useSelector(state => state.reportSchedule.userEmail);
+ const [existData, setExitData] = useState(null);
+ const {user, isLoggedIn} = useSelector(state => state.reportSchedule)
 
   const scheduleData = useSelector(state => state.reportSchedule)
   console.log('schedule data on dashboard:', scheduleData)
@@ -23,10 +22,27 @@ const ScheduleModal = ({ visible, onClose }) => {
   };
 
   useEffect(() => {
-    if (visible) {
-      dispatch(setModalStep('view')); // Set to 'view' when modal opens
-    }
-  }, [visible, dispatch]);
+    const loadState = async () => {
+      if (visible) {
+        const loadedState = await loadStateFromStorage();
+        console.log('persissata',loadedState)
+        if (loadedState && loadedState.reportSchedule) {
+          console.log('inside')
+          const userSchedule = loadedState.reportSchedule.fullData.find(
+            schedule => schedule.id?.email === user.email
+          );
+          console.log(...loadedState.reportSchedule.fullData)
+          console.log(userSchedule)
+          setExitData(userSchedule || null);
+        }
+        console.log('curreentSTep', currentStep)
+        dispatch(setModalStep('view'))
+        //currentStep('view');
+      }
+    };
+   
+    loadState();
+  }, [visible]);
 
   const renderContent = () => {
     if (!isLoggedIn) {
@@ -37,29 +53,35 @@ const ScheduleModal = ({ visible, onClose }) => {
       );
     }
 
-    const canEditSchedule = scheduleExists && loggedInUserEmail === scheduleUserEmail;
-
+    //const canEditSchedule = scheduleExists && loggedInUserEmail === scheduleUserEmail;
+    
+    console.log('state of modal', currentStep)
     switch (currentStep) {
       case 'view':
-        if (scheduleExists) {
+        if (existData) {
           return (
             <ExistingScheduleView
+              data= {existData}
               onEdit={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
             />
           );
         } else {
           return (
-            <View style={styles.noScheduleContainer}>
-              <Text style={styles.noScheduleText}>
-                No schedule exists. Create a new one?
-              </Text>
-              <TouchableOpacity
-                style={styles.createButton}
-                onPress={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
-              >
-                <Text style={styles.buttonText}>Create Schedule</Text>
-              </TouchableOpacity>
-            </View>
+            // <View style={styles.noScheduleContainer}>
+            //   <Text style={styles.noScheduleText}>
+            //     No schedule exists. Create a new one?
+            //   </Text>
+            //   <TouchableOpacity
+            //     style={styles.createButton}
+            //     onPress={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
+            //   >
+            //     <Text style={styles.buttonText}>Create Schedule</Text>
+            //   </TouchableOpacity>
+            // </View>
+            <EditModal
+            onCancel={handleClose}
+            onProceed={() => dispatch(setModalStep('details'))} // Change to 'details' step
+          />
           );
         }
       case 'edit':

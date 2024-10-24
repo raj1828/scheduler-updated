@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: [],
+  user: null,
   isLoggedIn: null,
   reportTypes: [],
   selectedVehicles: [],
@@ -12,8 +12,8 @@ const initialState = {
   selectedDay: '',
   selectedDate: '',
   scheduleUserEmail: '', // Field for the logged-in user's email
-  fullData: {}, // Field to store all selected parameters data
-  currentModalStep: 'edit',
+  fullData: [], // Field to store all selected parameters data
+ currentModalStep: 'view',
 };
 
 const reportScheduleSlice = createSlice({
@@ -36,6 +36,12 @@ const reportScheduleSlice = createSlice({
       // state.fullData = { ...state.fullData, ...rest };
       // console.log('fullData', state.fullData);
       return {...state, ...action.payload}
+    },
+    setFullData:(state, action) => {
+      if (!Array.isArray(state.fullData)) {
+        state.fullData = [];
+      }
+      state.fullData.push(action.payload);
     },
     login: (state, action) => {
       state.user = action.payload;
@@ -70,6 +76,7 @@ export const {
   logout, 
   register,
   setModalStep,
+  setFullData
 } = reportScheduleSlice.actions;
 
 export default reportScheduleSlice.reducer;

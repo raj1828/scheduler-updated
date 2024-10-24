@@ -2,21 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {  saveStateToStorage, store } from '../store/store';
-import { resetSchedule } from '../selectors/ReportSlice';
+import {  setScheduleDetails, setFullData, setModalStep } from '../selectors/ReportSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 const FinalConfirmationModal = ({ onCancel }) => {
   const dispatch = useDispatch();
   const scheduleState = useSelector((state) => state.reportSchedule);
   console.log("schedule state: ", scheduleState);
+  const userEmail = scheduleState.user;
 
   console.log('day ----', scheduleState.selectedDay)
-
-  const handleReset = () => {
-    //dispatch(resetSchedule());
+// const change= 
+//   scheduleState.currentModalStep('view')
+// }
+  const onSave = () => {
+    const update1 = {
+      ...scheduleState,
+    }
+    dispatch(setScheduleDetails(update1));
+    const data = {
+      id : userEmail,
+      ...scheduleState
+    }
+    //dispatch(setModalStep('view'))
+    dispatch(setFullData(data))
     saveStateToStorage(store.getState());
-    console.log('a',store.getState());
+    //console.log('a',store.getState());
     onCancel();
   };
 
@@ -78,7 +91,7 @@ const FinalConfirmationModal = ({ onCancel }) => {
       
       
     </ScrollView>
-    <TouchableOpacity style={styles.okayButton} onPress={onCancel}>
+    <TouchableOpacity style={styles.okayButton} onPress={onSave}>
         <Text style={styles.okayButtonText}>Okay</Text>
       </TouchableOpacity>
     </>

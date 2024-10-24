@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-const ExistingScheduleView = ({ onEdit }) => {
-  const scheduleState = useSelector(state => state.reportSchedule) || {}; 
+const ExistingScheduleView = ({ onEdit, data }) => {
+ // const data = useSelector(state => state.reportSchedule) || {}; 
 
-  console.log('emaillllllllll', scheduleState)
-  console.log('emaillllllllll', scheduleState.emailIds)
+  console.log('emaillllllllll', data)
+  console.log('emaillllllllll', data.emailIds)
 
   return (
     <View style={styles.container}>
@@ -15,8 +15,8 @@ const ExistingScheduleView = ({ onEdit }) => {
       <View style={styles.detailsContainer}>
         <View style={styles.emailContainer}>
           {/* Email(s) Section */}
-          {scheduleState.emailIds?.length > 0 ? (
-            scheduleState.emailIds.map((email, index) => (
+          {data.emailIds?.length > 0 ? (
+            data.emailIds.map((email, index) => (
               <Text key={index} style={styles.emailText}>{email}</Text>
             ))
           ) : (
@@ -26,15 +26,15 @@ const ExistingScheduleView = ({ onEdit }) => {
 
         {/* Report Information */}
         <Text style={styles.scheduleText}>
-          You have scheduled the <Text style={styles.boldText}>{scheduleState.interval || 'N/A'} report</Text> on{' '}
-          <Text style={styles.boldText}>{scheduleState.selectedDay || 'N/A'}, Dated {new Date(scheduleState.selectedDate).toLocaleDateString()}</Text>, at{' '}
-          <Text style={styles.boldText}>{scheduleState.selectedTime || 'N/A'}</Text>
+          You have scheduled the <Text style={styles.boldText}>{data.interval || 'N/A'} report</Text> on{' '}
+          <Text style={styles.boldText}>{data.selectedDay || 'N/A'}, Dated {new Date(data.selectedDate).toLocaleDateString()}</Text>, at{' '}
+          <Text style={styles.boldText}>{data.selectedTime || 'N/A'}</Text>
         </Text>
 
         {/* Selected Reports Section */}
         <Text style={styles.sectionHeading}>Selected Reports</Text>
-        {scheduleState.reportTypes?.length > 0 ? (
-          scheduleState.reportTypes.map((report, index) => (
+        {data.reportTypes?.length > 0 ? (
+          data.reportTypes.map((report, index) => (
             <View key={index} style={styles.reportItem}>
               <Text style={styles.reportText}>✔ {report}</Text>
             </View>
@@ -46,7 +46,7 @@ const ExistingScheduleView = ({ onEdit }) => {
         {/* Selected Vehicles Section */}
         <Text style={styles.sectionHeading}>Selected Vehicles</Text>
         <FlatList
-          data={scheduleState.selectedVehicles || []}
+          data={data.selectedVehicles || []}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vehicleItem}>
