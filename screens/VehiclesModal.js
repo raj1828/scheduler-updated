@@ -28,15 +28,15 @@ const EditModal = ({ onProceed, onCancel }) => {
 
   const handleProceed = () => {
     if (reportTypes.length === 0) {
-      Alert.alert('Error', 'Please select at least one report type.');
+      Alert.alert('Error', 'Please select report type.');
       return;
     }
     if (selectedVehicles.length === 0) {
-      Alert.alert('Error', 'Please select at least one vehicle.');
+      Alert.alert('Error', 'Please select vehicle.');
       return;
     }
     if (emailIds.length === 0) {
-      Alert.alert('Error', 'Please add at least one email address.');
+      Alert.alert('Error', 'Please add email address.');
       return;
     }
     onProceed();

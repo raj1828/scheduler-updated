@@ -3,7 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView } from '
 import { useSelector } from 'react-redux';
 
 const ExistingScheduleView = ({ onEdit, data }) => {
- // const data = useSelector(state => state.reportSchedule) || {}; 
+ const data2 = useSelector(state => state.reportSchedule) || {}; 
+
+ console.log('Data ata Schedule : ', data2);
+ console.log('================================', data2.selectedVehicles)
+ console.log('Data ata Existing : ', data);
 
   console.log('emaillllllllll', data)
   console.log('emaillllllllll', data.emailIds)
@@ -15,8 +19,8 @@ const ExistingScheduleView = ({ onEdit, data }) => {
       <View style={styles.detailsContainer}>
         <View style={styles.emailContainer}>
           {/* Email(s) Section */}
-          {data.emailIds?.length > 0 ? (
-            data.emailIds.map((email, index) => (
+          {data2.emailIds?.length > 0 ? (
+            data2.emailIds.map((email, index) => (
               <Text key={index} style={styles.emailText}>{email}</Text>
             ))
           ) : (
@@ -26,15 +30,15 @@ const ExistingScheduleView = ({ onEdit, data }) => {
 
         {/* Report Information */}
         <Text style={styles.scheduleText}>
-          You have scheduled the <Text style={styles.boldText}>{data.interval || 'N/A'} report</Text> on{' '}
-          <Text style={styles.boldText}>{data.selectedDay || 'N/A'}, Dated {new Date(data.selectedDate).toLocaleDateString()}</Text>, at{' '}
-          <Text style={styles.boldText}>{data.selectedTime || 'N/A'}</Text>
+          You have scheduled the <Text style={styles.boldText}>{data2.interval || 'N/A'} report</Text> on{' '}
+          <Text style={styles.boldText}>{data2.selectedDay || 'N/A'}, Dated {new Date(data.selectedDate).toLocaleDateString()}</Text>, at{' '}
+          <Text style={styles.boldText}>{data2.selectedTime || 'N/A'}</Text>
         </Text>
 
         {/* Selected Reports Section */}
         <Text style={styles.sectionHeading}>Selected Reports</Text>
-        {data.reportTypes?.length > 0 ? (
-          data.reportTypes.map((report, index) => (
+        {data2.reportTypes?.length > 0 ? (
+          data2.reportTypes.map((report, index) => (
             <View key={index} style={styles.reportItem}>
               <Text style={styles.reportText}>✔ {report}</Text>
             </View>
@@ -46,7 +50,7 @@ const ExistingScheduleView = ({ onEdit, data }) => {
         {/* Selected Vehicles Section */}
         <Text style={styles.sectionHeading}>Selected Vehicles</Text>
         <FlatList
-          data={data.selectedVehicles || []}
+          data={data2.selectedVehicles || []}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vehicleItem}>

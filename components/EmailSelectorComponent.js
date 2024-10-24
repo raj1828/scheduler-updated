@@ -6,7 +6,7 @@ const EmailSelector = ({ emailIds, onEmailsChange }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
-  const isValidEmail = (email) => {
+  const checkMail = (email) => {
     // Simple email regex for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -14,12 +14,12 @@ const EmailSelector = ({ emailIds, onEmailsChange }) => {
 
   const addEmail = () => {
     if (emailIds.length >= 5) {
-      setError('You can only add up to 5 email addresses.');
+      setError('Email Address Limit Reaches.');
       return;
     }
 
     if (email && !emailIds.includes(email)) {
-      if (isValidEmail(email)) {
+      if (checkMail(email)) {
         onEmailsChange([...emailIds, email]);
         setEmail('');
         setError(''); // Clear error if the email is valid
@@ -27,7 +27,7 @@ const EmailSelector = ({ emailIds, onEmailsChange }) => {
         setError('Please enter a valid email address.');
       }
     } else if (emailIds.includes(email)) {
-      setError('This email has already been added.');
+      setError('This email is Exist');
     }
   };
 
