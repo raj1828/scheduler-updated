@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Data from '../store/VehicleData.json'
 
-const mockVehicles = [
-  { branch: 'Thane', vin: 'PYV096001N5A01064', registration_number: 'KM10HT4629', lob_name: 'HCV Cargo' },
-  { branch: 'Thane', vin: 'PYV096001N5A01068', registration_number: 'KM10HT4630', lob_name: 'HCV Cargo' },
-  { branch: 'Thane', vin: 'PYV096001N5A01069', registration_number: 'KM10HT4632', lob_name: 'HCV Cargo' },
-  { branch: 'Pune', vin: 'PYV093002M1F12888', registration_number: 'KM10HQ4735', lob_name: 'HCV Cargo' },
-  { branch: 'Pune', vin: 'PYV093002M1F12833', registration_number: 'KM10HQ4737', lob_name: 'HCV Cargo' },
-  { branch: 'Pune', vin: 'PYV093002M1F12865', registration_number: 'KM10HQ4736', lob_name: 'HCV Cargo' },
-  { branch: 'Mumbai', vin: 'PYV096005N1P35123', registration_number: 'KM10JA2965', lob_name: 'HCV Cargo' },
-  { branch: 'Mumbai', vin: 'PYV093008P1A02550', registration_number: 'KM10JB5548', lob_name: 'HCV Cargo' },
-];
+const vehicle = Data.vehicles;
+//console.log('vechicles Data', vehicle);
 
 const VehicleSelector = ({ selectedVehicles, onSelectionChange }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredVehicles, setFilteredVehicles] = useState(mockVehicles);
+  const [filteredVehicles, setFilteredVehicles] = useState(vehicle);
   const [selectedBranch, setSelectedBranch] = useState('All');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const branches = Array.from(new Set(mockVehicles.map(vehicle => vehicle.branch))).sort();
+  const branches = Array.from(new Set(vehicle.map(vehicle => vehicle.branch))).sort();
 
   const handleSearch = (query, branch = selectedBranch) => {
     setSearchQuery(query);
-    const filtered = mockVehicles.filter(vehicle => 
+    const filtered = vehicle.filter(vehicle => 
       (vehicle.vin.toLowerCase().includes(query.toLowerCase()) ||
        vehicle.registration_number.toLowerCase().includes(query.toLowerCase())) &&
       (branch === 'All' || vehicle.branch === branch)

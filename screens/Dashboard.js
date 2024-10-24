@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, BackHandler, Alert } from 'react-native';
-import ScheduleModal from './ScheduleModal';
+import ScheduleModal from './MainModal';
 import HeaderRightButton from './SchedularButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch } from 'react-redux';

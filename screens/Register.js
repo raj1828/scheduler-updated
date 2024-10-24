@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { register } from '../selectors/ReportSlice';
 import AuthStyle from './Styles/AuthStyle';
+import { resetSchedule } from '../selectors/ReportSlice';
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -37,6 +38,7 @@ const Register = ({ navigation }) => {
       const userData = { email, password };
       await AsyncStorage.setItem('user', JSON.stringify(userData));
       dispatch(register(userData));
+      dispatch(resetSchedule());
       Alert.alert('Success', 'Registered successfully!');
       navigation.navigate('Login');
     } catch (error) {

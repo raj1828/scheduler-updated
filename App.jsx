@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider, useDispatch } from 'react-redux';
 import { store, loadStateFromStorage } from './store/store';
 import { setScheduleDetails } from './selectors/ReportSlice';
-import ScheduleModal from './screens/ScheduleModal';
+import ScheduleModal from './screens/MainModal';
 import Dashboard from './screens/Dashboard';
 import Login from './screens/Login';
 import Register from './screens/Register';

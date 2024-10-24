@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import EditModal from './Editmodal';
-import ScheduleDetailsComponent from './ScheduleDetails';
+import EditModal from './VehiclesModal';
+import ScheduleDetailsComponent from './DetailSchedual';
 import FinalConfirmationModal from './ConfirmPage';
 import ExistingScheduleView from './ExistingData';
 import { setModalStep } from '../selectors/ReportSlice';
@@ -22,7 +22,7 @@ const ScheduleModal = ({ visible, onClose }) => {
   };
 
   useEffect(() => {
-    const loadState = async () => {
+    const previousState = async () => {
       if (visible) {
         const loadedState = await loadStateFromStorage();
         console.log('persissata',loadedState)
@@ -41,7 +41,7 @@ const ScheduleModal = ({ visible, onClose }) => {
       }
     };
    
-    loadState();
+    previousState();
   }, [visible]);
 
   const renderContent = () => {
