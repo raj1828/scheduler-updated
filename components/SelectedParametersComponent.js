@@ -23,7 +23,7 @@ const SelectedParametersDropdown = () => {
             <View style={{flexDirection: 'row', width: "100%"}}>
               <View style={{flexDirection: 'row', alignItems:'center', width: "50%"}}>
                 <Ionicons 
-                  name="checkmark-circle-outline" size={20} color='green'
+                  name="checkmark-circle" size={20} color='green'
                 />
                 <Text key={type} style={styles.reportTypes}>{type}</Text>
               </View>

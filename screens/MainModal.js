@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import EditModal from './VehiclesModal';
 import ScheduleDetailsComponent from './DetailSchedual';
@@ -7,42 +7,37 @@ import FinalConfirmationModal from './ConfirmPage';
 import ExistingScheduleView from './ExistingData';
 import { setModalStep } from '../selectors/ReportSlice';
 import { loadStateFromStorage } from '../store/store';
+
 const ScheduleModal = ({ visible, onClose }) => {
   const dispatch = useDispatch();
   const currentStep = useSelector(state => state.reportSchedule.currentModalStep);
- const [existData, setExitData] = useState(null);
- const {user, isLoggedIn} = useSelector(state => state.reportSchedule)
-
-  const scheduleData = useSelector(state => state.reportSchedule)
-  console.log('schedule data on dashboard:', scheduleData)
-
-  const handleClose = () => {
-    dispatch(setModalStep('edit')); // Reset to 'edit' step
-    onClose();
-  };
+  const [existData, setExitData] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const { user, isLoggedIn } = useSelector(state => state.reportSchedule);
 
   useEffect(() => {
     const previousState = async () => {
       if (visible) {
+        setLoading(true); 
         const loadedState = await loadStateFromStorage();
-        console.log('persissata',loadedState)
         if (loadedState && loadedState.reportSchedule) {
-          console.log('inside')
           const userSchedule = loadedState.reportSchedule.fullData.find(
             schedule => schedule.id?.email === user.email
           );
-          console.log(...loadedState.reportSchedule.fullData)
-          console.log(userSchedule)
           setExitData(userSchedule || null);
         }
-        console.log('curreentSTep', currentStep)
-        dispatch(setModalStep('view'))
-        //currentStep('view');
+        dispatch(setModalStep('view'));
+        setLoading(false); 
       }
     };
-   
+
     previousState();
   }, [visible]);
+
+  const handleClose = () => {
+    dispatch(setModalStep('edit')); // Reset to Edit step
+    onClose();
+  };
 
   const renderContent = () => {
     if (!isLoggedIn) {
@@ -53,35 +48,22 @@ const ScheduleModal = ({ visible, onClose }) => {
       );
     }
 
-    //const canEditSchedule = scheduleExists && loggedInUserEmail === scheduleUserEmail;
-    
-    console.log('state of modal', currentStep)
     switch (currentStep) {
       case 'view':
         if (existData) {
           return (
             <ExistingScheduleView
-              data= {existData} onClose={onClose}
+              data={existData} 
+              onClose={onClose}
               onEdit={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
             />
           );
         } else {
           return (
-            // <View style={styles.noScheduleContainer}>
-            //   <Text style={styles.noScheduleText}>
-            //     No schedule exists. Create a new one?
-            //   </Text>
-            //   <TouchableOpacity
-            //     style={styles.createButton}
-            //     onPress={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
-            //   >
-            //     <Text style={styles.buttonText}>Create Schedule</Text>
-            //   </TouchableOpacity>
-            // </View>
             <EditModal
-            onCancel={handleClose}
-            onProceed={() => dispatch(setModalStep('details'))} // Change to 'details' step
-          />
+              onCancel={handleClose}
+              onProceed={() => dispatch(setModalStep('details'))} // Change to 'details' step
+            />
           );
         }
       case 'edit':
@@ -114,7 +96,14 @@ const ScheduleModal = ({ visible, onClose }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          {renderContent()}
+          {loading ? ( 
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#193893" />
+              <Text style={styles.loadingText}>Loading...</Text>
+            </View>
+          ) : (
+            renderContent()
+          )}
         </View>
       </View>
     </Modal>
@@ -142,27 +131,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  noScheduleContainer: {
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  noScheduleText: {
-    fontSize: 18,
-    color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  createButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
+  loadingText: {
+    marginTop: 10,
     fontSize: 16,
-    fontWeight: 'bold',
+    color: '#333',
   },
 });
 

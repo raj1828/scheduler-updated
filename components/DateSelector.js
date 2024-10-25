@@ -1,12 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, Alert,ToastAndroid } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DateSelector = ({ selectedDate, onDateChange }) => {
+
+const DateSelector = ({ selectedDate, onDateChange, skipWeekends }) => {
   const [show, setShow] = useState(false);
+
+  const showToast = () => {
+    ToastAndroid.show('Disable Skip weekend to select this date.', ToastAndroid.SHORT);
+  };
+
+console.log(skipWeekends)
+
+  const isWeekend = (date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; // Sunday is 0, Saturday is 6
+  };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || new Date();
+    
+    // Check if the selected date is a weekend
+    if(skipWeekends){
+
+        if (isWeekend(currentDate)) {
+          showToast();
+          return;
+        }
+    }
+    
     setShow(Platform.OS === 'ios');
     onDateChange(currentDate);
   };
@@ -31,7 +53,7 @@ const DateSelector = ({ selectedDate, onDateChange }) => {
           is24Hour={true}
           display="default"
           onChange={onChange}
-          minimumDate={new Date()}
+          minimumDate={new Date()} // Prevent selecting past dates
         />
       )}
     </View>

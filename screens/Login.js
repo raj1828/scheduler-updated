@@ -43,6 +43,7 @@ const Login = ({ navigation }) => {
       }
 
       const storedUser = await AsyncStorage.getItem('user');
+      console.log('======', storedUser)
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
       if (parsedUser && parsedUser.email === email && parsedUser.password === password) {

@@ -1,25 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Data from '../store/VehicleData.json'
 
 const vehicle = Data.vehicles;
-//console.log('vechicles Data', vehicle);
 
 const VehicleSelector = ({ selectedVehicles, onSelectionChange }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredVehicles, setFilteredVehicles] = useState(vehicle);
   const [selectedBranch, setSelectedBranch] = useState('All');
   const [modalVisible, setModalVisible] = useState(false);
+  
+  const branches = Array.from(new Set(vehicle.map(v => v.branch))).sort();
 
-  const branches = Array.from(new Set(vehicle.map(vehicle => vehicle.branch))).sort();
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      handleSearch(searchQuery, selectedBranch);
+    }, 300); // Delay
+
+    return () => {
+      clearTimeout(handler); // Clear timeout on cleanup
+    };
+  }, [searchQuery, selectedBranch]); 
 
   const handleSearch = (query, branch = selectedBranch) => {
     setSearchQuery(query);
-    const filtered = vehicle.filter(vehicle => 
-      (vehicle.vin.toLowerCase().includes(query.toLowerCase()) ||
-       vehicle.registration_number.toLowerCase().includes(query.toLowerCase())) &&
-      (branch === 'All' || vehicle.branch === branch)
+    const filtered = vehicle.filter(v => 
+      (v.vin.toLowerCase().includes(query.toLowerCase()) ||
+       v.registration_number.toLowerCase().includes(query.toLowerCase())) &&
+      (branch === 'All' || v.branch === branch)
     );
     setFilteredVehicles(filtered);
   };
@@ -53,64 +62,60 @@ const VehicleSelector = ({ selectedVehicles, onSelectionChange }) => {
   const handleBranchSelect = (branch) => {
     setSelectedBranch(branch);
     setModalVisible(false);
-    handleSearch(searchQuery, branch);  // Call handleSearch with updated branch
+    
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select Vehicles:</Text>
       
-      <View style={{backgroundColor:"#E8ECF8"}}>
-      <TouchableOpacity style={styles.branchSelector} onPress={() => {
-        modalVisible ? setModalVisible(false) : setModalVisible(true)
-      }}>
-        <Text style={styles.branchText}>Branch: {selectedBranch}</Text>
-        <Ionicons  name= {modalVisible ? "chevron-up-outline" : "chevron-down-outline"} style={{fontSize: 20}}/>
-      </TouchableOpacity>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search vehicles"
-        placeholderTextColor={'#333'}
-        value={searchQuery}
-        onChangeText={(query) => handleSearch(query)}  // Call handleSearch with updated query
-      />
-      <FlatList
-        data={filteredVehicles}
-        renderItem={renderVehicleItem}
-        keyExtractor={item => item.vin}
-        style={styles.vehicleList}
-        scrollEnabled={true}
-        nestedScrollEnabled={true}
-      />
-      
-      {/* Modal for branch selection */}
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            {/* <Text style={styles.modalTitle}>Select Branch</Text> */}
-            <FlatList
-              data={['All', ...branches]}
-              keyExtractor={item => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.modalItem}
-                  onPress={() => handleBranchSelect(item)}
-                >
-                  <Text style={styles.modalItemText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-            {/* <Button title="Close" onPress={() => setModalVisible(false)} /> */}
+      <View style={{ backgroundColor: "#E8ECF8" }}>
+        <TouchableOpacity style={styles.branchSelector} onPress={() => {
+          setModalVisible(!modalVisible);
+        }}>
+          <Text style={styles.branchText}>Branch: {selectedBranch}</Text>
+          <Ionicons name={modalVisible ? "chevron-up-outline" : "chevron-down-outline"} style={{ fontSize: 20 }} />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search vehicles"
+          placeholderTextColor={'#333'}
+          value={searchQuery}
+          onChangeText={setSearchQuery} 
+        />
+        <FlatList
+          data={filteredVehicles}
+          renderItem={renderVehicleItem}
+          keyExtractor={item => item.vin}
+          style={styles.vehicleList}
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
+        />
+        
+        {/* Modal for branch selection */}
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <FlatList
+                data={['All', ...branches]}
+                keyExtractor={item => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.modalItem}
+                    onPress={() => handleBranchSelect(item)}
+                  >
+                    <Text style={styles.modalItemText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
       </View>
-      
-      
     </View>
   );
 };

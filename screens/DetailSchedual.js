@@ -82,7 +82,7 @@ const ScheduleDetailsComponent = ({ onCancel,onSave }) => {
           <Text style={styles.cancleButtonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.proceedButton} onPress={handleSave}>
-          <Text style={styles.proceedButtonText}>Proceed</Text>
+          <Text style={styles.proceedButtonText}>Okey</Text>
         </TouchableOpacity>
       </View>
     </>

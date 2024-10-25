@@ -71,7 +71,7 @@ const ExistingScheduleView = ({ onEdit, data , onClose}) => {
         {/* Selected Vehicles Section */}
         <Text style={styles.sectionHeading}>Selected Vehicles</Text>
         <FlatList
-        style={{backgroundColor:"#F0F1F6"}}
+        style={{backgroundColor:"#F0F1F6", padding:10}}
           data={data2.selectedVehicles || []}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     color: '#1E2E4D',
   },
   emailContainer: {
-    backgroundColor: '#c7c7c7',
+    backgroundColor: '#F0F1F6',
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,

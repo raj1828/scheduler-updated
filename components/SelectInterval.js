@@ -141,6 +141,7 @@ const handleLocalStateChange = (key, value) => {
       </TouchableOpacity>
       {(selectedInterval === 'monthly' ) && (
         <DateSelector
+        skipWeekends= {skipWeekends}
           selectedDate={localState.selectedDate}
           onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
         />
@@ -162,6 +163,7 @@ const handleLocalStateChange = (key, value) => {
       </TouchableOpacity>
       {( selectedInterval === 'quarterly') && (
         <DateSelector
+        skipWeekends= {skipWeekends}
           selectedDate={localState.selectedDate}
           onDateChange={(date) => handleLocalStateChange('selectedDate', date)}
         />
