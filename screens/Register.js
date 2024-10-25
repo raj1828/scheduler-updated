@@ -9,6 +9,7 @@ import { resetData } from '../selectors/ReportSlice';
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [scheduleData, setScheduleData] = useState([]);
   const dispatch = useDispatch();
 
   const validateEmail = (email) => {
@@ -35,8 +36,18 @@ const Register = ({ navigation }) => {
       return;
     }
     try {
-      const userData = { email, password };
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      const userData = { email, password, scheduleData };
+      
+      // Retrieve existing users from AsyncStorage
+      const existingUsersString = await AsyncStorage.getItem('users');
+      const existingUsers = existingUsersString ? JSON.parse(existingUsersString) : [];
+    
+      // Add the new user to the list
+      existingUsers.push(userData);
+    
+      // Save the updated list back to AsyncStorage
+      await AsyncStorage.setItem('users', JSON.stringify(existingUsers));
+      
       dispatch(register(userData));
       dispatch(resetData());
       Alert.alert('Success', 'Registered successfully!');
@@ -44,6 +55,7 @@ const Register = ({ navigation }) => {
     } catch (error) {
       Alert.alert('Error', 'Failed to register');
     }
+    
   };
 
   return (

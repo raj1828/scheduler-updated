@@ -41,12 +41,14 @@ const Login = ({ navigation }) => {
         Alert.alert('Error', 'Please fill in all fields');
         return;
       }
-
-      const storedUser = await AsyncStorage.getItem('user');
-      console.log('======', storedUser)
-      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-
-      if (parsedUser && parsedUser.email === email && parsedUser.password === password) {
+    
+      const storedUser = await AsyncStorage.getItem('users');
+      const parsedUsers = storedUser ? JSON.parse(storedUser) : [];
+    
+      // Find the user based on both email and password
+      const foundUser = parsedUsers.find(user => user.email === email && user.password === password);
+    
+      if (foundUser) {
         dispatch(login({ email, password })); // Dispatch the login action with user credentials
         await AsyncStorage.setItem('isLoggedIn', 'true');
         Alert.alert('Success', 'Logged in successfully!');
@@ -61,6 +63,7 @@ const Login = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
+    
   };
 
   return (
