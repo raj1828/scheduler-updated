@@ -1,27 +1,40 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { store,saveStateToStorage } from '../store/store';
-import { setReportTypes, setSelectedVehicles, setEmailIds } from '../selectors/ReportSlice';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {store, saveStateToStorage} from '../store/store';
+import {
+  setReportTypes,
+  setSelectedVehicles,
+  setEmailIds,
+} from '../selectors/ReportSlice';
 import ReportTypeSelector from '../components/ReportTypeComponent';
 import VehicleSelector from '../components/SelectVechicleComponent';
 import EmailSelector from '../components/EmailSelectorComponent';
 
-const EditModal = ({ onProceed, onCancel }) => {
+const EditModal = ({onProceed, onCancel}) => {
   const dispatch = useDispatch();
-  const { reportTypes, selectedVehicles, emailIds } = useSelector(state => state.reportSchedule);
+  const {reportTypes, selectedVehicles, emailIds} = useSelector(
+    state => state.reportSchedule,
+  );
 
-  const handleReportTypesChange = (types) => {
+  const handleReportTypesChange = types => {
     dispatch(setReportTypes(types));
     saveStateToStorage(store.getState());
   };
 
-  const handleVehiclesChange = (vehicles) => {
+  const handleVehiclesChange = vehicles => {
     dispatch(setSelectedVehicles(vehicles));
     saveStateToStorage(store.getState());
   };
 
-  const handleEmailsChange = (emails) => {
+  const handleEmailsChange = emails => {
     dispatch(setEmailIds(emails));
     saveStateToStorage(store.getState());
   };
@@ -31,10 +44,10 @@ const EditModal = ({ onProceed, onCancel }) => {
       Alert.alert('Error', 'Please select report type.');
       return;
     }
-    if (selectedVehicles.length === 0) {
-      Alert.alert('Error', 'Please select vehicle.');
-      return;
-    }
+    // if (selectedVehicles.length === 0) {
+    //   Alert.alert('Error', 'Please select vehicle.');
+    //   return;
+    // }
     if (emailIds.length === 0) {
       Alert.alert('Error', 'Please add email address.');
       return;
@@ -43,42 +56,41 @@ const EditModal = ({ onProceed, onCancel }) => {
   };
 
   const handleCancel = () => {
-    onCancel()
-  }
+    onCancel();
+  };
 
-  const showVehicleSelector = reportTypes.some(type => type === 'vehiclewise' || type === 'drivingScoredcard');
-
+  const showVehicleSelector = reportTypes.some(
+    type => type === 'vehiclewise' || type === 'drivingScoredcard',
+  );
 
   return (
     <>
-        <ScrollView style={styles.container}>
-      <Text style={styles.title}>Edit Schedule Reports</Text>
-      <ReportTypeSelector
-        selectedTypes={reportTypes}
-        onSelectionChange={handleReportTypesChange}
-      />
-     {showVehicleSelector && (
-        <VehicleSelector
-          selectedVehicles={selectedVehicles}
-          onSelectionChange={handleVehiclesChange}
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Edit Schedule Reports</Text>
+        <ReportTypeSelector
+          selectedTypes={reportTypes}
+          onSelectionChange={handleReportTypesChange}
         />
-      )}
-      <EmailSelector
-        emailIds={emailIds}
-        onEmailsChange={handleEmailsChange}
-      />
-    </ScrollView>
-    <View style={styles.footerButton}>
-    <TouchableOpacity style={styles.cancleButton} onPress={handleCancel}>
-        <Text style={styles.cancleButtonText}>Cancle</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
-        <Text style={styles.proceedButtonText}>Proceed</Text>
-      </TouchableOpacity>
-    </View>
-      
+        {showVehicleSelector && (
+          <VehicleSelector
+            selectedVehicles={selectedVehicles}
+            onSelectionChange={handleVehiclesChange}
+          />
+        )}
+        <EmailSelector
+          emailIds={emailIds}
+          onEmailsChange={handleEmailsChange}
+        />
+      </ScrollView>
+      <View style={styles.footerButton}>
+        <TouchableOpacity style={styles.cancleButton} onPress={handleCancel}>
+          <Text style={styles.cancleButtonText}>Cancle</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+          <Text style={styles.proceedButtonText}>Proceed</Text>
+        </TouchableOpacity>
+      </View>
     </>
-    
   );
 };
 
@@ -90,7 +102,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    color:'#193893'
+    color: '#193893',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingBottom: 10
   },
   proceedButton: {
     width: '49%',
@@ -103,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
   },
-  cancleButton:{
+  cancleButton: {
     width: '49%',
     //backgroundColor: '#193893',
     padding: 15,
@@ -125,13 +140,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-  footerButton:{
+  footerButton: {
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     //marginBottom: 20,
     paddingHorizontal: 20,
     //paddingVertical: 10
-  }
+  },
 });
 
 export default EditModal;

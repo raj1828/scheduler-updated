@@ -13,7 +13,7 @@ const SelectedParametersDropdown = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.header} onPress={toggleDropdown}>
-        <Text style={styles.headerText}>View Selected Parameters</Text>
+        <Text style={styles.headerText}>Selected Parameters</Text>
         <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={24} color="#193893" />
       </TouchableOpacity>
       {isOpen && (

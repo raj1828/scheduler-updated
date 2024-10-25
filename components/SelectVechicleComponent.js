@@ -60,6 +60,7 @@ const VehicleSelector = ({ selectedVehicles, onSelectionChange }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Select Vehicles:</Text>
       
+      <View style={{backgroundColor:"#E8ECF8"}}>
       <TouchableOpacity style={styles.branchSelector} onPress={() => {
         modalVisible ? setModalVisible(false) : setModalVisible(true)
       }}>
@@ -107,6 +108,9 @@ const VehicleSelector = ({ selectedVehicles, onSelectionChange }) => {
           </View>
         </View>
       </Modal>
+      </View>
+      
+      
     </View>
   );
 };
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
   searchInput: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 8,
+    borderRadius: 25,
     padding: 10,
     marginBottom: 10,
     color: '#333',
@@ -150,14 +154,14 @@ const styles = StyleSheet.create({
   vehicleList: {
     height:300,
     flex: 1,  
-    backgroundColor:'#ddd'
+    //backgroundColor:'#ddd'
   },
   vehicleItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#fff',
   },
   vehicleInfo: {
     marginLeft: 10,

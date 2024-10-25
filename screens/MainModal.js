@@ -61,7 +61,7 @@ const ScheduleModal = ({ visible, onClose }) => {
         if (existData) {
           return (
             <ExistingScheduleView
-              data= {existData}
+              data= {existData} onClose={onClose}
               onEdit={() => dispatch(setModalStep('edit'))} // Change to 'edit' step
             />
           );
